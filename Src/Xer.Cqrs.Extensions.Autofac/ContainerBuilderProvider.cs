@@ -13,11 +13,11 @@ namespace Xer.Cqrs.Extensions.Autofac
 
         public ContainerBuilderProvider(IComponentContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-        public T Resolve<T>() where T : class => this._context.Resolve<T>();
+        public T Resolve<T>() where T : class => _context.Resolve<T>();
 
-        public IEnumerable<T> ResolveMultiple<T>() where T : class => this._context.Resolve<IEnumerable<T>>();
+        public IEnumerable<T> ResolveMultiple<T>() where T : class => _context.Resolve<IEnumerable<T>>();
     }
 }
