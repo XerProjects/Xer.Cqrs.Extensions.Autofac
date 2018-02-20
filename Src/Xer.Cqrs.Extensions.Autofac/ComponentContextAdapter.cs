@@ -6,12 +6,12 @@ namespace Xer.Cqrs.Extensions.Autofac
     /// <summary>
     /// Represents an adapter to <see cref="IComponentContext"/>.
     /// </summary>
-    public class ContainerBuilderProvider : CommandStack.Resolvers.IContainerAdapter,
+    public class ComponentContextAdapter : CommandStack.Resolvers.IContainerAdapter,
                                             EventStack.Resolvers.IContainerAdapter
     {
         private readonly IComponentContext _context;
 
-        public ContainerBuilderProvider(IComponentContext context)
+        public ComponentContextAdapter(IComponentContext context)
         {
             _context = context;
         }

@@ -1,26 +1,28 @@
 ﻿using Autofac;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Xer.Cqrs.Extensions.Autofac
 {
     public static class ContainerBuilderExtensions
     {
-        public static ContainerBuilder AddCqrs(this ContainerBuilder builder, Assembly assembly)
+        public static ContainerBuilder AddCqrs(this ContainerBuilder builder, params Assembly[] assemblies)
         {
-            return builder.AddCqrs(new[] { assembly });
-        }
-
-        public static ContainerBuilder AddCqrs(this ContainerBuilder builder, IEnumerable<Assembly> assemblies)
-        {
-            //builder.AddCqrsCore();
-
+            builder.AddCqrsCore()
+                .AddEvents(opt => opt
+                    .AddEventHandlers(assemblies)
+                    .AddEventHandlersByAttribute(assemblies))
+                .AddCommands(opt => opt
+                    .AddCommandHandlers(assemblies)
+                    .AddCommandHandlersByAttribute(assemblies));
+                
             return builder;
         }
 
         public static ICqrsBuilder AddCqrsCore(this ContainerBuilder builder)
         {
-            return new CqrsBuilder(builder);
+            return new CqrsBuilder(builder)
+                .AddCommands()
+                .AddEvents();
         }
     }
 }
