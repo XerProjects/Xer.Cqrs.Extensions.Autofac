@@ -39,7 +39,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             return this;
         }
 
-        public ICqrsCommandBuilder AddCommandHandlers(params Assembly[] assemblies)
+        public ICqrsCommandBuilder ByInterface(params Assembly[] assemblies)
         {
             _builder.RegisterAssemblyTypes(assemblies)
                 .AsClosedTypesOf(typeof(ICommandAsyncHandler<>))
@@ -60,7 +60,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             return this;
         }
 
-        public ICqrsCommandBuilder AddCommandHandlersByAttribute(params Assembly[] assemblies)
+        public ICqrsCommandBuilder ByAttribute(params Assembly[] assemblies)
         {
             _builder.RegisterAssemblyTypes(assemblies)
                 .Where(CommandHandlerAttributeMethod.IsFoundInType)

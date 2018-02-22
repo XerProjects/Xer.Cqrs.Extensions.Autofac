@@ -4,8 +4,8 @@ namespace Xer.Cqrs.Extensions.Autofac
 {
     public interface ICqrsCommandBuilder
     {
-        ICqrsCommandBuilder AddCommandHandlers(params Assembly[] assemblies);
+        ICqrsCommandBuilder ByInterface(params Assembly[] assemblies);
 
-        ICqrsCommandBuilder AddCommandHandlersByAttribute(params Assembly[] assemblies);
+        ICqrsCommandBuilder ByAttribute(params Assembly[] assemblies);
     }
 }

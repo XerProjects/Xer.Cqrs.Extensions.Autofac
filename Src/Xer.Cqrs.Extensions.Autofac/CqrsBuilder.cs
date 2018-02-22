@@ -16,7 +16,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _commandBuilder = new CqrsCommandBuilder(_builder);
         }
 
-        public ICqrsBuilder AddCommands(Action<ICqrsCommandBuilder> builder = null)
+        public ICqrsBuilder AddCommandHandlers(Action<ICqrsCommandBuilder> builder = null)
         {
             if (builder == null)
             {
@@ -28,7 +28,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             return this;
         }
 
-        public ICqrsBuilder AddEvents(Action<ICqrsEventBuilder> builder = null)
+        public ICqrsBuilder AddEventHandlers(Action<ICqrsEventBuilder> builder = null)
         {
             if (builder == null)
             {

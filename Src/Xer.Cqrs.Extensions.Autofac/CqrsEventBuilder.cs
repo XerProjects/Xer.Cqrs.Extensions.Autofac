@@ -19,7 +19,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder = builder;
         }
 
-        public ICqrsEventBuilder AddEventHandlers(params Assembly[] assemblies)
+        public ICqrsEventBuilder ByInterface(params Assembly[] assemblies)
         {
             _builder.RegisterAssemblyTypes(assemblies)
                 .AsClosedTypesOf(typeof(IEventAsyncHandler<>))
@@ -38,7 +38,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             return this;
         }
 
-        public ICqrsEventBuilder AddEventHandlersByAttribute(params Assembly[] assemblies)
+        public ICqrsEventBuilder ByAttribute(params Assembly[] assemblies)
         {
             _builder.RegisterAssemblyTypes(assemblies)
                 .Where(EventHandlerAttributeMethod.IsFoundInType)

@@ -8,12 +8,12 @@ namespace Xer.Cqrs.Extensions.Autofac
         public static ContainerBuilder AddCqrs(this ContainerBuilder builder, params Assembly[] assemblies)
         {
             builder.AddCqrsCore()
-                .AddEvents(opt => opt
-                    .AddEventHandlers(assemblies)
-                    .AddEventHandlersByAttribute(assemblies))
-                .AddCommands(opt => opt
-                    .AddCommandHandlers(assemblies)
-                    .AddCommandHandlersByAttribute(assemblies));
+                .AddEventHandlers(opt => opt
+                    .ByInterface(assemblies)
+                    .ByAttribute(assemblies))
+                .AddCommandHandlers(opt => opt
+                    .ByInterface(assemblies)
+                    .ByAttribute(assemblies));
                 
             return builder;
         }
@@ -21,8 +21,8 @@ namespace Xer.Cqrs.Extensions.Autofac
         public static ICqrsBuilder AddCqrsCore(this ContainerBuilder builder)
         {
             return new CqrsBuilder(builder)
-                .AddCommands()
-                .AddEvents();
+                .AddCommandHandlers()
+                .AddEventHandlers();
         }
     }
 }

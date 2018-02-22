@@ -4,8 +4,8 @@ namespace Xer.Cqrs.Extensions.Autofac
 {
     public interface ICqrsBuilder
     {
-        ICqrsBuilder AddCommands(Action<ICqrsCommandBuilder> builder = null);
+        ICqrsBuilder AddCommandHandlers(Action<ICqrsCommandBuilder> builder = null);
 
-        ICqrsBuilder AddEvents(Action<ICqrsEventBuilder> builder = null);
+        ICqrsBuilder AddEventHandlers(Action<ICqrsEventBuilder> builder = null);
     }
 }

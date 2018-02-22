@@ -4,8 +4,8 @@ namespace Xer.Cqrs.Extensions.Autofac
 {
     public interface ICqrsEventBuilder
     {
-        ICqrsEventBuilder AddEventHandlers(params Assembly[] assemblies);
+        ICqrsEventBuilder ByInterface(params Assembly[] assemblies);
 
-        ICqrsEventBuilder AddEventHandlersByAttribute(params Assembly[] assemblies);
+        ICqrsEventBuilder ByAttribute(params Assembly[] assemblies);
     }
 }
