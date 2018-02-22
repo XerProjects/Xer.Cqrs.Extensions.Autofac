@@ -3,7 +3,7 @@ using Xer.Delegator;
 
 namespace Xer.Cqrs.Extensions.Autofac
 {
-    internal class CommandHandlerDelegateResolver : IMessageHandlerResolver
+    public class CommandHandlerDelegateResolver : IMessageHandlerResolver
     {
         private readonly IMessageHandlerResolver _messageHandlerResolver;
 

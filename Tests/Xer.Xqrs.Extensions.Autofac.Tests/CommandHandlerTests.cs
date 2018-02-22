@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Autofac.Core.Registration;
 using Xer.Cqrs.CommandStack;
 using Xer.Cqrs.Extensions.Autofac;
 using Xunit;
@@ -16,6 +17,30 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public CommandHandlerTests()
         {
             this._assembly = typeof(TestCommand).Assembly;
+        }
+
+        [Fact]
+        public void Should_Resolve_CommandDelegator()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.AddCqrsCore()
+                .AddCommandHandlers();
+
+            var context = builder.Build();
+
+            Assert.NotNull(context.Resolve<CommandDelegator>());
+        }
+
+        [Fact]
+        public void Should_Notresolve_CommandHandlerResolver()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            builder.AddCqrsCore()
+                .AddCommandHandlers();
+
+            var context = builder.Build();
+
+            Assert.Throws<ComponentNotRegisteredException>(() => context.Resolve<CommandHandlerDelegateResolver>());
         }
 
         [Fact]

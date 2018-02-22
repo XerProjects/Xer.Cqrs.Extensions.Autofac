@@ -20,6 +20,7 @@ namespace Xer.Cqrs.Extensions.Autofac
         {
             if (builder == null)
             {
+                _commandBuilder.AddCore();
                 return this;
             }
 
@@ -32,6 +33,7 @@ namespace Xer.Cqrs.Extensions.Autofac
         {
             if (builder == null)
             {
+                _eventBuilder.AddCore();
                 return this;
             }
 
