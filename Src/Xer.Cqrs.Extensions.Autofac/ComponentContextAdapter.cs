@@ -7,7 +7,7 @@ namespace Xer.Cqrs.Extensions.Autofac
     /// Represents an adapter to <see cref="IComponentContext"/>.
     /// </summary>
     public class ComponentContextAdapter : CommandStack.Resolvers.IContainerAdapter,
-                                            EventStack.Resolvers.IContainerAdapter
+                                           EventStack.Resolvers.IContainerAdapter
     {
         private readonly IComponentContext _context;
 

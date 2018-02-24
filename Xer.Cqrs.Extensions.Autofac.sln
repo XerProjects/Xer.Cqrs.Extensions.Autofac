@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xer.Cqrs.Extensions.Autofac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B05F95C-0026-48AC-84F3-F028ECA4587B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xer.Xqrs.Extensions.Autofac.Tests", "Tests\Xer.Xqrs.Extensions.Autofac.Tests\Xer.Xqrs.Extensions.Autofac.Tests.csproj", "{BCDBDA2E-C080-4DF2-9563-B102E43EDBA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xer.Cqrs.Extensions.Autofac.Tests", "Tests\Xer.Cqrs.Extensions.Autofac.Tests\Xer.Cqrs.Extensions.Autofac.Tests.csproj", "{BCDBDA2E-C080-4DF2-9563-B102E43EDBA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

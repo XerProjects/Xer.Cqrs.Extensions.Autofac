@@ -23,8 +23,8 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Resolve_CommandDelegator()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers();
+            builder.RegisterCqrsCore()
+                .RegisterCommandHandlers(select => select.ByInterface(_assembly));
 
             var context = builder.Build();
 
@@ -35,8 +35,7 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Notresolve_CommandHandlerResolver()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers();
+            builder.RegisterCqrsCore();
 
             var context = builder.Build();
 
@@ -47,8 +46,8 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Resolve_CommandHandler_ByInterface()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers(opt => opt.ByInterface(_assembly));
+            builder.RegisterCqrsCore()
+                .RegisterCommandHandlers(opt => opt.ByInterface(_assembly));
 
             var context = builder.Build();
 
@@ -61,8 +60,8 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Resolve_CommandHandler_ByAttribute()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers(opt => opt.ByAttribute(_assembly));
+            builder.RegisterCqrsCore()
+                .RegisterCommandHandlers(opt => opt.ByAttribute(_assembly));
 
             var context = builder.Build();
 
@@ -73,8 +72,8 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Resolve_Multiple_CommandHandlers_ByInterface()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers(opt => opt.ByInterface(_assembly));
+            builder.RegisterCqrsCore()
+                .RegisterCommandHandlers(opt => opt.ByInterface(_assembly));
 
             var context = builder.Build();
 
@@ -87,8 +86,8 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         public void Should_Resolve_Multiple_CommandHandlers_ByAttribute()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.AddCqrsCore()
-                .AddCommandHandlers(opt => opt.ByAttribute(_assembly));
+            builder.RegisterCqrsCore()
+                .RegisterCommandHandlers(opt => opt.ByAttribute(_assembly));
 
             var context = builder.Build();
 

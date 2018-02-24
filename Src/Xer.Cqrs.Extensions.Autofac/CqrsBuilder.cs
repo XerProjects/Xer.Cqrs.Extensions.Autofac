@@ -1,43 +1,78 @@
 ﻿using Autofac;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xer.Cqrs.CommandStack;
+using Xer.Cqrs.EventStack;
+using Xer.Delegator;
+using Xer.Delegator.Registrations;
+using Xer.Delegator.Resolvers;
 
 namespace Xer.Cqrs.Extensions.Autofac
 {
     internal class CqrsBuilder : ICqrsBuilder
     {
         private readonly ContainerBuilder _builder;
-        private readonly CqrsCommandBuilder _commandBuilder;
-        private readonly CqrsEventBuilder _eventBuilder;
+        private readonly CqrsCommandHandlerSelector _commandHandlerSelector;
+        private readonly CqrsEventHandlerSelector _eventHandlerSelector;
 
         internal CqrsBuilder(ContainerBuilder builder)
         {
             _builder = builder;
-            _eventBuilder = new CqrsEventBuilder(_builder);
-            _commandBuilder = new CqrsCommandBuilder(_builder);
+            _commandHandlerSelector = new CqrsCommandHandlerSelector(_builder);
+            _eventHandlerSelector = new CqrsEventHandlerSelector(_builder);
         }
 
-        public ICqrsBuilder AddCommandHandlers(Action<ICqrsCommandBuilder> builder = null)
+        public ICqrsBuilder RegisterCommandHandlers(Action<ICqrsCommandHandlerSelector> selector)
         {
-            if (builder == null)
+            if (selector == null)
             {
-                _commandBuilder.AddCore();
-                return this;
+                throw new ArgumentNullException(nameof(selector));
             }
 
-            builder(_commandBuilder);
+            // Select command handlers to register.
+            selector(_commandHandlerSelector);
+
+            _builder.Register(context =>
+            {
+                IMessageHandlerResolver[] handlers = context.Resolve<IEnumerable<CommandHandlerDelegateResolver>>().ToArray();
+
+                if (handlers.Any())
+                {
+                    return handlers.Length > 1
+                        ? new CommandDelegator(CompositeMessageHandlerResolver.Compose(handlers))
+                        : new CommandDelegator(handlers[0]);
+                }
+
+                return new CommandDelegator(new SingleMessageHandlerRegistration().BuildMessageHandlerResolver());
+            }).As<CommandDelegator>().SingleInstance();
 
             return this;
         }
 
-        public ICqrsBuilder AddEventHandlers(Action<ICqrsEventBuilder> builder = null)
+        public ICqrsBuilder RegisterEventHandlers(Action<ICqrsEventHandlerSelector> selector)
         {
-            if (builder == null)
+            if (selector == null)
             {
-                _eventBuilder.AddCore();
-                return this;
+                throw new ArgumentNullException(nameof(selector));
             }
 
-            builder(_eventBuilder);
+            // Select event handlers to register.
+            selector(_eventHandlerSelector);
+            
+            _builder.Register(context =>
+            {
+                IMessageHandlerResolver[] handlers = context.Resolve<IEnumerable<EventHandlerDelegateResolver>>().ToArray();
+
+                if (handlers.Any())
+                {
+                    return handlers.Length > 1
+                        ? new EventDelegator(CompositeMessageHandlerResolver.Compose(handlers))
+                        : new EventDelegator(handlers[0]);
+                }
+
+                return new EventDelegator(new MultiMessageHandlerRegistration().BuildMessageHandlerResolver());
+            }).As<EventDelegator>().SingleInstance();
 
             return this;
         }

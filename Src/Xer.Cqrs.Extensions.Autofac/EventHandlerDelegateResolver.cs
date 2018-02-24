@@ -7,7 +7,7 @@ namespace Xer.Cqrs.Extensions.Autofac
     {
         private readonly IMessageHandlerResolver _messageHandlerResolver;
 
-        public EventHandlerDelegateResolver(IMessageHandlerResolver messageHandlerResolver)
+        internal EventHandlerDelegateResolver(IMessageHandlerResolver messageHandlerResolver)
         {
             _messageHandlerResolver = messageHandlerResolver;
         }
