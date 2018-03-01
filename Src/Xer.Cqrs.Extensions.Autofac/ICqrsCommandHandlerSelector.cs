@@ -5,13 +5,9 @@ namespace Xer.Cqrs.Extensions.Autofac
 {
     public interface ICqrsCommandHandlerSelector
     {
-        ICqrsCommandHandlerSelector ByInterface(Assembly assembly);
-        ICqrsCommandHandlerSelector ByInterface(Assembly assembly, Lifetime lifetime);
-        ICqrsCommandHandlerSelector ByInterface(IEnumerable<Assembly> assemblies);
-        ICqrsCommandHandlerSelector ByInterface(IEnumerable<Assembly> assemblies, Lifetime lifetime);
-        ICqrsCommandHandlerSelector ByAttribute(Assembly assembly);
-        ICqrsCommandHandlerSelector ByAttribute(Assembly assembly, Lifetime lifetime);
-        ICqrsCommandHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies);
-        ICqrsCommandHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies, Lifetime lifetime);
+        ICqrsCommandHandlerSelector ByInterface(params Assembly[] assemblies);
+        ICqrsCommandHandlerSelector ByInterface(Lifetime lifetime, params Assembly[] assemblies);
+        ICqrsCommandHandlerSelector ByAttribute(params Assembly[] assemblies);
+        ICqrsCommandHandlerSelector ByAttribute(Lifetime lifetime, params Assembly[] assemblies);
     }
 }
