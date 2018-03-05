@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Xer.Cqrs.CommandStack;
@@ -19,23 +18,13 @@ namespace Xer.Cqrs.Extensions.Autofac
         {
             _builder = builder;
         }
-
-        public ICqrsCommandHandlerSelector ByInterface(Assembly assembly)
+     
+        public ICqrsCommandHandlerSelector ByInterface(params Assembly[] assemblies)
         {
-            return ByInterface(assembly, Lifetime.PerDependency);
+            return ByInterface(Lifetime.PerDependency);
         }
 
-        public ICqrsCommandHandlerSelector ByInterface(Assembly assembly, Lifetime lifetime)
-        {
-            return ByInterface(new[] { assembly }, lifetime);
-        }
-
-        public ICqrsCommandHandlerSelector ByInterface(IEnumerable<Assembly> assemblies)
-        {
-            return ByInterface(assemblies, Lifetime.PerDependency);
-        }
-
-        public ICqrsCommandHandlerSelector ByInterface(IEnumerable<Assembly> assemblies, Lifetime lifetime)
+        public ICqrsCommandHandlerSelector ByInterface(Lifetime lifetime, params Assembly[] assemblies)
         {
             if (assemblies == null)
             {
@@ -77,23 +66,13 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             return this;
         }
-
-        public ICqrsCommandHandlerSelector ByAttribute(Assembly assembly)
+       
+        public ICqrsCommandHandlerSelector ByAttribute(params Assembly[] assemblies)
         {
-            return ByAttribute(assembly, Lifetime.PerDependency);
+            return ByAttribute(Lifetime.PerDependency, assemblies);
         }
 
-        public ICqrsCommandHandlerSelector ByAttribute(Assembly assembly, Lifetime lifetime)
-        {
-            return ByAttribute(new[] { assembly }, lifetime);
-        }
-
-        public ICqrsCommandHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies)
-        {
-            return ByAttribute(assemblies, Lifetime.PerDependency);
-        }
-
-        public ICqrsCommandHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies, Lifetime lifetime)
+        public ICqrsCommandHandlerSelector ByAttribute(Lifetime lifetime, params Assembly[] assemblies)
         {
             if (assemblies == null)
             {
