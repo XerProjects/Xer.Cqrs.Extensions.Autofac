@@ -8,10 +8,8 @@
     <PackageReference Include="Autofac" Version="4.6.2" />
     <PackageReference Include="Scrutor" Version="2.2.2" />
     <PackageReference Include="Xer.Cqrs.CommandStack" Version="1.0.0" />
-    <PackageReference Include="Xer.Cqrs.CommandStack.Extensions.Attributes" Version="1.0.0" />
     <PackageReference Include="Xer.Cqrs.EventStack" Version="1.0.0" />
-    <PackageReference Include="Xer.Cqrs.EventStack.Extensions.Attributes" Version="1.0.0" />
-    <PackageReference Include="Xer.Delegator" Version="1.0.0" />
+    <PackageReference Include="Xer.Delegator" Version="0.3.0" />
   </ItemGroup>
 
 </Project>

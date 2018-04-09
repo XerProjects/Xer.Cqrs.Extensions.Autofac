@@ -5,7 +5,7 @@ using System.Linq;
 using Xer.Cqrs.CommandStack;
 using Xer.Cqrs.EventStack;
 using Xer.Delegator;
-using Xer.Delegator.Registration;
+using Xer.Delegator.Registrations;
 using Xer.Delegator.Resolvers;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Xer.Cqrs.Extensions.Autofac.Tests")]
