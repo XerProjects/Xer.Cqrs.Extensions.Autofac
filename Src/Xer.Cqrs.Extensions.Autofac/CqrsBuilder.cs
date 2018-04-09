@@ -8,6 +8,8 @@ using Xer.Delegator;
 using Xer.Delegator.Registrations;
 using Xer.Delegator.Resolvers;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Xer.Cqrs.Extensions.Autofac.Tests")]
+
 namespace Xer.Cqrs.Extensions.Autofac
 {
     internal class CqrsBuilder : ICqrsBuilder
