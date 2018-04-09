@@ -16,8 +16,8 @@ namespace Xer.Cqrs.Extensions.Autofac
             _context = context;
         }
 
-        public T Resolve<T>() where T : class => _context.Resolve<T>();
+        public T Resolve<T>() where T : class => _context.ResolveOptional<T>();
 
-        public IEnumerable<T> ResolveMultiple<T>() where T : class => _context.Resolve<IEnumerable<T>>();
+        public IEnumerable<T> ResolveMultiple<T>() where T : class => _context.ResolveOptional<IEnumerable<T>>();
     }
 }

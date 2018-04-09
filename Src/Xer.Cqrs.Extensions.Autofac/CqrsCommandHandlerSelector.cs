@@ -32,6 +32,11 @@ namespace Xer.Cqrs.Extensions.Autofac
                 throw new ArgumentNullException(nameof(assemblies));
             }
 
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
+            }
+
             var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
                 .AsClosedTypesOf(typeof(ICommandAsyncHandler<>))
                 .AsImplementedInterfaces();
@@ -78,6 +83,11 @@ namespace Xer.Cqrs.Extensions.Autofac
             if (assemblies == null)
             {
                 throw new ArgumentNullException(nameof(assemblies));
+            }
+
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
             }
 
             var handlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
