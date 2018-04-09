@@ -1,7 +1,4 @@
 using Autofac;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Autofac.Core.Registration;
 using Xer.Cqrs.CommandStack;
@@ -12,19 +9,12 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
 {
     public class CommandHandlerTests
     {
-        private readonly Assembly _assembly;
-
-        public CommandHandlerTests()
-        {
-            this._assembly = typeof(TestCommand).Assembly;
-        }
-
         [Fact]
         public void Should_Resolve_CommandDelegator()
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterCqrsCore()
-                .RegisterCommandHandlers(select => select.ByInterface(_assembly));
+                .RegisterCommandHandlers(select => select.ByInterface(typeof(TestCommand).Assembly));
 
             var context = builder.Build();
 
@@ -47,7 +37,7 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterCqrsCore()
-                .RegisterCommandHandlers(opt => opt.ByInterface(_assembly));
+                .RegisterCommandHandlers(opt => opt.ByInterface(typeof(TestCommand).Assembly));
 
             var context = builder.Build();
 
@@ -61,7 +51,7 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterCqrsCore()
-                .RegisterCommandHandlers(opt => opt.ByAttribute(_assembly));
+                .RegisterCommandHandlers(opt => opt.ByAttribute(typeof(TestCommand).Assembly));
 
             var context = builder.Build();
 
@@ -69,25 +59,11 @@ namespace Xer.Xqrs.Extensions.Autofac.Tests
         }
 
         [Fact]
-        public void Should_Resolve_Multiple_CommandHandlers_ByInterface()
-        {
-            ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterCqrsCore()
-                .RegisterCommandHandlers(opt => opt.ByInterface(_assembly));
-
-            var context = builder.Build();
-
-            var commandHandler = context.Resolve<IEnumerable<ICommandAsyncHandler<MultipleCommand>>>();
-
-            Assert.Equal(2, commandHandler.Count());
-        }
-
-        [Fact]
         public void Should_Resolve_Multiple_CommandHandlers_ByAttribute()
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterCqrsCore()
-                .RegisterCommandHandlers(opt => opt.ByAttribute(_assembly));
+                .RegisterCommandHandlers(opt => opt.ByAttribute(typeof(TestCommand).Assembly));
 
             var context = builder.Build();
 

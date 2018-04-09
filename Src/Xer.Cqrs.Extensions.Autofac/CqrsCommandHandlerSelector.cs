@@ -3,9 +3,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Xer.Cqrs.CommandStack;
+using Xer.Cqrs.CommandStack.Extensions.Attributes;
 using Xer.Cqrs.CommandStack.Resolvers;
 using Xer.Delegator;
-using Xer.Delegator.Registrations;
+using Xer.Delegator.Registration;
 using Xer.Delegator.Resolvers;
 
 namespace Xer.Cqrs.Extensions.Autofac
@@ -112,7 +113,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder.Register(context =>
             {
                 SingleMessageHandlerRegistration singleMessageHandlerRegistration = new SingleMessageHandlerRegistration();
-                singleMessageHandlerRegistration.RegisterCommandHandlerAttributes(assemblies, context.Resolve);
+                singleMessageHandlerRegistration.RegisterCommandHandlersByAttribute(assemblies, context.Resolve);
                 return new CommandHandlerDelegateResolver(singleMessageHandlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
