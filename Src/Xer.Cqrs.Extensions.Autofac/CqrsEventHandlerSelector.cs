@@ -5,6 +5,7 @@ using System.Reflection;
 using Xer.Cqrs.EventStack;
 using Xer.Cqrs.EventStack.Resolvers;
 using Xer.Delegator;
+using Xer.Delegator.Registration;
 using Xer.Delegator.Registrations;
 using Xer.Delegator.Resolvers;
 
@@ -119,7 +120,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder.Register(context =>
             {
                 var handlerRegistration = new MultiMessageHandlerRegistration();
-                handlerRegistration.RegisterEventHandlerAttributes(assemblies, context.Resolve);
+                handlerRegistration.RegisterEventHandlersByAttribute(assemblies, context.Resolve);
                 return new EventHandlerDelegateResolver(handlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
