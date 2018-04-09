@@ -7,7 +7,7 @@
     <Copyright>Copyright (c) XerProjects contributors</Copyright>
     <PackageLicenseUrl>https://github.com/XerProjects/Xer.Cqrs.Extensions.Autofac/blob/dev/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/XerProjects/Xer.Cqrs.Extensions.Autofac</PackageProjectUrl>
-    <PackageTags>cqrs;domain-event;eventing;event;event-handler;event-message;autofac</PackageTags>
+    <PackageTags>container;ioc;ioc-container;cqrs;extension;autofac</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
