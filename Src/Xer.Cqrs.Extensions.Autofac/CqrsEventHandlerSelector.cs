@@ -1,12 +1,11 @@
 ﻿using Autofac;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Reflection;
 using Xer.Cqrs.EventStack;
 using Xer.Cqrs.EventStack.Resolvers;
 using Xer.Delegator;
 using Xer.Delegator.Registrations;
-using Xer.Delegator.Resolvers;
 
 namespace Xer.Cqrs.Extensions.Autofac
 {
@@ -19,26 +18,21 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder = builder;
         }
 
-        public ICqrsEventHandlerSelector ByInterface(Assembly assembly)
+        public ICqrsEventHandlerSelector ByInterface(params Assembly[] assemblies)
         {
-            return ByInterface(assembly, Lifetime.PerDependency);
+            return ByInterface(Lifetime.PerDependency, assemblies);
         }
 
-        public ICqrsEventHandlerSelector ByInterface(Assembly assembly, Lifetime lifetime)
-        {
-            return ByInterface(new[] { assembly }, lifetime);
-        }
-
-        public ICqrsEventHandlerSelector ByInterface(IEnumerable<Assembly> assemblies)
-        {
-            return ByInterface(assemblies, Lifetime.PerDependency);
-        }
-
-        public ICqrsEventHandlerSelector ByInterface(IEnumerable<Assembly> assemblies, Lifetime lifetime)
+        public ICqrsEventHandlerSelector ByInterface(Lifetime lifetime, params Assembly[] assemblies)
         {
             if (assemblies == null)
             {
-                throw new System.ArgumentNullException(nameof(assemblies));
+                throw new ArgumentNullException(nameof(assemblies));
+            }
+
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
             }
 
             var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
@@ -74,26 +68,21 @@ namespace Xer.Cqrs.Extensions.Autofac
             return this;
         }
         
-        public ICqrsEventHandlerSelector ByAttribute(Assembly assembly)
+        public ICqrsEventHandlerSelector ByAttribute(params Assembly[] assemblies)
         {
-            return ByAttribute(assembly, Lifetime.PerDependency);
+            return ByAttribute(Lifetime.PerDependency, assemblies);
         }
         
-        public ICqrsEventHandlerSelector ByAttribute(Assembly assembly, Lifetime lifetime)
-        {
-            return ByAttribute(new[] { assembly }, lifetime);
-        }
-
-        public ICqrsEventHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies)
-        {
-            return ByAttribute(assemblies, Lifetime.PerDependency);
-        }
-
-        public ICqrsEventHandlerSelector ByAttribute(IEnumerable<Assembly> assemblies, Lifetime lifetime)
+        public ICqrsEventHandlerSelector ByAttribute(Lifetime lifetime, params Assembly[] assemblies)
         {
             if (assemblies == null)
             {
                 throw new System.ArgumentNullException(nameof(assemblies));
+            }
+
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
             }
 
             var attributeHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())

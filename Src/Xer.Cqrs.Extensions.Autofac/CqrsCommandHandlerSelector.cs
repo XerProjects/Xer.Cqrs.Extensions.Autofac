@@ -21,7 +21,7 @@ namespace Xer.Cqrs.Extensions.Autofac
      
         public ICqrsCommandHandlerSelector ByInterface(params Assembly[] assemblies)
         {
-            return ByInterface(Lifetime.PerDependency);
+            return ByInterface(Lifetime.PerDependency, assemblies);
         }
 
         public ICqrsCommandHandlerSelector ByInterface(Lifetime lifetime, params Assembly[] assemblies)
@@ -29,6 +29,11 @@ namespace Xer.Cqrs.Extensions.Autofac
             if (assemblies == null)
             {
                 throw new ArgumentNullException(nameof(assemblies));
+            }
+
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
             }
 
             var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
@@ -77,6 +82,11 @@ namespace Xer.Cqrs.Extensions.Autofac
             if (assemblies == null)
             {
                 throw new ArgumentNullException(nameof(assemblies));
+            }
+
+            if (assemblies.Length == 0)
+            {
+                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
             }
 
             var handlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
