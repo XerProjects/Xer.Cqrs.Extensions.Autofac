@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Xer.Cqrs.EventStack;
@@ -34,14 +35,16 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             if (assemblies.Length == 0)
             {
-                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
+                throw new ArgumentException("No event handler assemblies were provided.", nameof(assemblies));
             }
 
-            var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            Assembly[] distinctAssemblies = assemblies.Distinct().ToArray();
+
+            var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .AsClosedTypesOf(typeof(IEventAsyncHandler<>))
                 .AsImplementedInterfaces();
 
-            var syncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            var syncHandlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .AsClosedTypesOf(typeof(IEventHandler<>))
                 .AsImplementedInterfaces();
 
@@ -84,10 +87,12 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             if (assemblies.Length == 0)
             {
-                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
+                throw new ArgumentException("No event handler assemblies were provided.", nameof(assemblies));
             }
 
-            var attributeHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            Assembly[] distinctAssemblies = assemblies.Distinct().ToArray();
+
+            var attributeHandlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .Where(type => type.IsClass && !type.IsAbstract &&
                                EventHandlerAttributeMethod.IsFoundInType(type))
                 .AsSelf();
@@ -110,7 +115,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder.Register(context =>
             {
                 var handlerRegistration = new MultiMessageHandlerRegistration();
-                handlerRegistration.RegisterEventHandlersByAttribute(assemblies, context.Resolve);
+                handlerRegistration.RegisterEventHandlersByAttribute(distinctAssemblies, context.Resolve);
                 return new EventHandlerDelegateResolver(handlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
