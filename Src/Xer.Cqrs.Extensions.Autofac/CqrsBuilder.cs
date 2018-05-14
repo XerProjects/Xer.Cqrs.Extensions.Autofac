@@ -46,7 +46,7 @@ namespace Xer.Cqrs.Extensions.Autofac
                         : new CommandDelegator(handlers[0]);
                 }
 
-                return new CommandDelegator(NullMessageHandlerDelegateResolver.Instance);
+                return new CommandDelegator(new SingleMessageHandlerRegistration().BuildMessageHandlerResolver());
             }).As<CommandDelegator>().SingleInstance();
 
             return this;
@@ -73,7 +73,7 @@ namespace Xer.Cqrs.Extensions.Autofac
                         : new EventDelegator(handlers[0]);
                 }
 
-                return new EventDelegator(NullMessageHandlerDelegateResolver.Instance);
+                return new EventDelegator(new MultiMessageHandlerRegistration().BuildMessageHandlerResolver());
             }).As<EventDelegator>().SingleInstance();
 
             return this;

@@ -2,12 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>jeyjeyemem;mvput;xerprojects-contributors;</Authors>
-    <Description>Autofac container integration for Xer.Cqrs</Description>
-    <Copyright>Copyright (c) XerProjects contributors</Copyright>
-    <PackageLicenseUrl>https://github.com/XerProjects/Xer.Cqrs.Extensions.Autofac/blob/dev/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/XerProjects/Xer.Cqrs.Extensions.Autofac</PackageProjectUrl>
-    <PackageTags>container;ioc;ioc-container;cqrs;extension;autofac</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +11,7 @@
     <PackageReference Include="Xer.Cqrs.CommandStack.Extensions.Attributes" Version="1.0.0" />
     <PackageReference Include="Xer.Cqrs.EventStack" Version="2.0.0" />
     <PackageReference Include="Xer.Cqrs.EventStack.Extensions.Attributes" Version="1.0.0" />
+    <PackageReference Include="Xer.Delegator" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
