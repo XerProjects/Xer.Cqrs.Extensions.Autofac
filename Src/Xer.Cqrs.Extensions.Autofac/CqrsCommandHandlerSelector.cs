@@ -34,14 +34,16 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             if (assemblies.Length == 0)
             {
-                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
+                throw new ArgumentException("No command handler assemblies were provided.", nameof(assemblies));
             }
+            
+            Assembly[] distinctAssemblies = assemblies.Distinct().ToArray();
 
-            var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            var asyncHandlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .AsClosedTypesOf(typeof(ICommandAsyncHandler<>))
                 .AsImplementedInterfaces();
 
-            var syncHandlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            var syncHandlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .AsClosedTypesOf(typeof(ICommandHandler<>))
                 .AsImplementedInterfaces();
 
@@ -87,10 +89,12 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             if (assemblies.Length == 0)
             {
-                throw new ArgumentException("No assemblies were provided.", nameof(assemblies));
+                throw new ArgumentException("No command handler assemblies were provided.", nameof(assemblies));
             }
+            
+            Assembly[] distinctAssemblies = assemblies.Distinct().ToArray();
 
-            var handlerRegistration = _builder.RegisterAssemblyTypes(assemblies.ToArray())
+            var handlerRegistration = _builder.RegisterAssemblyTypes(distinctAssemblies)
                 .Where(type => type.IsClass && !type.IsAbstract &&
                                CommandHandlerAttributeMethod.IsFoundInType(type))
                 .AsSelf();
@@ -113,7 +117,7 @@ namespace Xer.Cqrs.Extensions.Autofac
             _builder.Register(context =>
             {
                 SingleMessageHandlerRegistration singleMessageHandlerRegistration = new SingleMessageHandlerRegistration();
-                singleMessageHandlerRegistration.RegisterCommandHandlersByAttribute(assemblies, context.Resolve);
+                singleMessageHandlerRegistration.RegisterCommandHandlersByAttribute(distinctAssemblies, context.Resolve);
                 return new CommandHandlerDelegateResolver(singleMessageHandlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
