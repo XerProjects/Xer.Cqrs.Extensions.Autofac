@@ -66,8 +66,10 @@ namespace Xer.Cqrs.Extensions.Autofac
             }
 
             _builder.Register(context =>
-            {
-                return new EventHandlerDelegateResolver(new ContainerEventHandlerResolver(new ComponentContextAdapter(context)));
+            {  
+                var c = context.Resolve<IComponentContext>();
+                return new EventHandlerDelegateResolver(
+                    new ContainerEventHandlerResolver(new ComponentContextAdapter(c)));
             }).AsSelf().SingleInstance();
 
             return this;
@@ -114,8 +116,9 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             _builder.Register(context =>
             {
+                var c = context.Resolve<IComponentContext>();
                 var handlerRegistration = new MultiMessageHandlerRegistration();
-                handlerRegistration.RegisterEventHandlersByAttribute(distinctAssemblies, context.Resolve);
+                handlerRegistration.RegisterEventHandlersByAttribute(distinctAssemblies, c.Resolve);
                 return new EventHandlerDelegateResolver(handlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
