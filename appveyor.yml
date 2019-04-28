@@ -24,7 +24,7 @@ deploy:
   name: production
   skip_symbols: true
   api_key:
-    secure: 1fEVy/0Jgny/LKUOQC75fofhRjEfpAaVV0Y8u3nH+oKdmrPFFFEF1swA+iS0W0rV
+    secure: 4W6iFCCmm5lNkko9G3XzASDCrVwHlfhBRg3hKWmK819hYQO5/O9ii57D84fxuOFe
   on:
     branch: master
     appveyor_repo_tag: true # Only deploy to NuGet if a tag is found.
