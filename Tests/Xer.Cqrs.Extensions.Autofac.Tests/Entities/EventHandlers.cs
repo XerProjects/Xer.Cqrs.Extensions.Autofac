@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xer.Cqrs.EventStack;
@@ -9,39 +10,60 @@ namespace Xer.Cqrs.Extensions.Autofac.Tests.Entities
     {
         
     }
-    
-    public class TestEventHandlerWithInterface1 : IEventAsyncHandler<TestEvent>
+
+    public abstract class BaseEventHandler<TEvent>
     {
-        public Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
+        private readonly List<TEvent> handledEvents = new List<TEvent>();
+
+        public bool HasHandledEvent(TEvent @event) => handledEvents.Contains(@event);
+        
+        public virtual Task HandleAsync(TEvent @event, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            handledEvents.Add(@event);
+            return Task.CompletedTask;
         }
     }
 
-    public class TestEventHandlerWithInterface2 : IEventAsyncHandler<TestEvent>
+    public class TestEventHandlerWithInterface1 : BaseEventHandler<TestEvent>, IEventAsyncHandler<TestEvent>
     {
-        public Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
+    }
+
+    public class TestEventHandlerWithInterface2 : BaseEventHandler<TestEvent>, IEventAsyncHandler<TestEvent>
+    {
+    }
+
+    public class TestEventHandlerWithInterface3 : BaseEventHandler<TestEvent>, IEventHandler<TestEvent>
+    {
+        public void Handle(TestEvent @event)
         {
-            throw new System.NotImplementedException();
+            HandleAsync(@event).GetAwaiter().GetResult();
         }
     }
 
-    public class TestEventHandlerWithAttribute1
+    public class TestEventHandlerWithInterface4 : BaseEventHandler<TestEvent>, IEventHandler<TestEvent>
+    {
+        public void Handle(TestEvent @event)
+        {
+            HandleAsync(@event).GetAwaiter().GetResult();
+        }
+    }
+
+    public class TestEventHandlerWithAttribute1 : BaseEventHandler<TestEvent>
     {
         [EventHandler]
-        public Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new System.NotImplementedException();
+            return base.HandleAsync(@event, cancellationToken);
         }
     }
     
 
-    public class TestEventHandlerWithAttribute2
+    public class TestEventHandlerWithAttribute2 : BaseEventHandler<TestEvent>
     {
         [EventHandler]
-        public Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task HandleAsync(TestEvent @event, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new System.NotImplementedException();
+            return base.HandleAsync(@event, cancellationToken);
         }
     }
 }

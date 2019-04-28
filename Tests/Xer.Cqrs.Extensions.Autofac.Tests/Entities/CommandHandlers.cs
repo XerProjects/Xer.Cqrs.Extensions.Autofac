@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xer.Cqrs.CommandStack;
@@ -14,39 +15,51 @@ namespace Xer.Cqrs.Extensions.Autofac.Tests.Entities
     {
 
     }
-
-    public class TestCommandHandlerWithAttribute
+    
+    public abstract class BaseCommandHandler<TCommand> where TCommand : class
     {
-        [CommandHandler]
-        public Task HandleAsync(TestCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        private readonly List<TCommand> handledCommands = new List<TCommand>();
+
+        public bool HasHandledCommand(TCommand command)
         {
+            return handledCommands.Contains(command);
+        }
+        
+        public virtual Task HandleAsync(TCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            handledCommands.Add(command);
             return Task.CompletedTask;
         }
     }
 
-    public class TestCommandHandlerWithInterface : ICommandAsyncHandler<TestCommand>
+    public class TestCommandHandlerWithInterface : BaseCommandHandler<TestCommand>, ICommandAsyncHandler<TestCommand>
     {
-        public Task HandleAsync(TestCommand command, CancellationToken cancellationToken = default(CancellationToken))
+    }
+
+    public class TestCommandHandlerWithAttribute : BaseCommandHandler<TestCommand>
+    {
+        [CommandHandler]
+        public override Task HandleAsync(TestCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Task.CompletedTask;
+            return base.HandleAsync(command, cancellationToken);
         }
     }
 
-    public class MultipleCommandHandlerWithAttribute1
+    public class MultipleCommandHandlerWithAttribute1 : BaseCommandHandler<MultipleCommand>
     {
         [CommandHandler]
-        public Task HandleAsync(MultipleCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task HandleAsync(MultipleCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Task.CompletedTask;
+            return base.HandleAsync(command, cancellationToken);
         }
     }
 
-    public class MultipleCommandHandlerWithAttribute2
+    public class MultipleCommandHandlerWithAttribute2 : BaseEventHandler<MultipleCommand>
     {
         [CommandHandler]
-        public Task HandleAsync(MultipleCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task HandleAsync(MultipleCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Task.CompletedTask;
+            return base.HandleAsync(command, cancellationToken);
         }
     }
 }
