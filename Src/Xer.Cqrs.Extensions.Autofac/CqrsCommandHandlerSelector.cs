@@ -66,10 +66,12 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             _builder.Register(context =>
             {
+                var c = context.Resolve<IComponentContext>();
+                var adapter = new ComponentContextAdapter(c);
                 return new CommandHandlerDelegateResolver(
                     CompositeMessageHandlerResolver.Compose(
-                        new ContainerCommandAsyncHandlerResolver(new ComponentContextAdapter(context)),
-                        new ContainerCommandHandlerResolver(new ComponentContextAdapter(context))));
+                        new ContainerCommandAsyncHandlerResolver(adapter),
+                        new ContainerCommandHandlerResolver(adapter)));
             }).AsSelf().SingleInstance();
 
             return this;
@@ -116,8 +118,9 @@ namespace Xer.Cqrs.Extensions.Autofac
 
             _builder.Register(context =>
             {
-                SingleMessageHandlerRegistration singleMessageHandlerRegistration = new SingleMessageHandlerRegistration();
-                singleMessageHandlerRegistration.RegisterCommandHandlersByAttribute(distinctAssemblies, context.Resolve);
+                var c = context.Resolve<IComponentContext>();
+                var singleMessageHandlerRegistration = new SingleMessageHandlerRegistration();
+                singleMessageHandlerRegistration.RegisterCommandHandlersByAttribute(distinctAssemblies, c.Resolve);
                 return new CommandHandlerDelegateResolver(singleMessageHandlerRegistration.BuildMessageHandlerResolver());
             }).AsSelf().SingleInstance();
 
